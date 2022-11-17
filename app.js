@@ -1,11 +1,28 @@
 const { json } = require('express');
 const express = require('express');
 const app = express();
+const session=require('express-session');
+const cookieParser=require('cookie-parser');
 
 app.set('view engine', 'ejs');
 
 app.use(express.urlencoded({extended:false}));
 app.use(express(json));
+
+app.use(cookieParser('mi ultra secreto'));
+
+
+app.use(session({
+
+    secret: 'mi ultra secreto',
+    resave:true,
+    saveUninitialized:true
+}));
+
+app.unsubscribe(passport.initialize());
+app.use(passport.session());
+
+
 
 app.use('/', require('./router'));
 
